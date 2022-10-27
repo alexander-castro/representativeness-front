@@ -38,6 +38,8 @@ export default defineComponent({
     </ul>
   </div>
   <div class="block">
-    <router-link to="/nuevo" class="button is-info">Subir archivo</router-link>
+    <router-link to="/nuevo" class="button is-link is-light"
+      >Subir archivo</router-link
+    >
   </div>
 </template>
