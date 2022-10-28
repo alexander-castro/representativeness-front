@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 export default defineComponent({
-  props: { nombre: String },
+  props: { nombre: String, fuerza: Number },
   components: { Bar },
   data() {
     return {
@@ -50,11 +50,12 @@ export default defineComponent({
     };
   },
   mounted() {
+    console.log(this.fuerza);
     this.fetchData();
   },
   methods: {
     async fetchData() {
-      const url = `${this.API}files/${this.nombre}`;
+      const url = `${this.API}files/${this.nombre}?force=${this.fuerza}`;
       const data = await (await fetch(url)).json();
       this.columns = data.columns;
       this.data = data.data;
@@ -73,7 +74,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1 class="title">Dataset: {{ nombre }}</h1>
+  <h1 class="title">Dataset: {{ nombre }} - {{ fuerza }}</h1>
   <div class="block">
     <h2 class="subtitle">Datos originales:</h2>
     <table class="table">

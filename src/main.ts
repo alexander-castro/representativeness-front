@@ -14,7 +14,10 @@ const routes = [
     path: "/reportes/:nombre",
     name: "reportes",
     component: FileReport,
-    props: true,
+    props: (route) => ({
+      nombre: route.params.nombre,
+      fuerza: route.query.fuerza,
+    }),
   },
   { path: "/nuevo", component: NewFile },
   { path: "/:catchAll(.*)", component: NotFound },
