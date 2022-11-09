@@ -22,7 +22,7 @@ export default defineComponent({
       matrixP: [],
       list: [],
       representativenessAverge: 0.0,
-      totalCount: 0,
+      countAverage: 0,
       graph: { name: "" },
       chartData: {
         labels: ["January", "February", "March"],
@@ -53,14 +53,27 @@ export default defineComponent({
       this.matrixPRows = data.matrixPRows;
       this.matrixP = data.matrixP;
       this.list = data.list;
-      const representativenessTotal = this.list.reduce((accumulator, currentValue) => accumulator + currentValue[4], 0);
-      this.totalCount = this.list.reduce((accumulator, currentValue) => accumulator + currentValue[2], 0);
-      this.representativenessAverge = representativenessTotal / this.list.length;
+      this.representativenessAverge =
+        this.list.reduce((accumulator, currentValue) => accumulator + currentValue[4], 0) / this.list.length;
+      this.countAverage =
+        this.list.reduce((accumulator, currentValue) => accumulator + currentValue[2], 0) / this.list.length;
       this.graph = data.graph;
     },
   },
 });
 </script>
+
+<style>
+.red-value {
+  background-color: red;
+}
+.yellow-value {
+  background-color: yellow;
+}
+.green-value {
+  background-color: green;
+}
+</style>
 
 <template>
   <h1 class="title">Dataset: {{ nombre }} - {{ fuerza }}</h1>
@@ -129,7 +142,15 @@ export default defineComponent({
       </tr>
       <tr v-for="(row, index) in matrixPRows" :key="row">
         <td>{{ row }}</td>
-        <td v-for="row_matrix in matrixP[index]" :key="row_matrix">
+        <td
+          v-for="row_matrix in matrixP[index]"
+          :key="row_matrix"
+          :class="{
+            'red-value': row_matrix < countAverage,
+            'yellow-value': row_matrix == countAverage,
+            'green-value': row_matrix > countAverage,
+          }"
+        >
           {{ row_matrix }}
         </td>
       </tr>
