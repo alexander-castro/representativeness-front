@@ -7,6 +7,7 @@ import FileList from "./components/FileList.vue";
 import NewFile from "./components/NewFile.vue";
 import FileReport from "./components/FileReport.vue";
 import NotFound from "./components/NotFound.vue";
+import ClassifierReport from "./components/ClassifierReport.vue";
 
 const routes = [
   { path: "/", component: FileList },
@@ -14,9 +15,17 @@ const routes = [
     path: "/reportes/:nombre",
     name: "reportes",
     component: FileReport,
-    props: (route) => ({
+    props: (route: { params: { nombre: any }; query: { fuerza: any } }) => ({
       nombre: route.params.nombre,
       fuerza: route.query.fuerza,
+    }),
+  },
+  {
+    path: "/clasificadores/:nombre",
+    name: "clasificadores",
+    component: ClassifierReport,
+    props: (route: { params: { nombre: any }; query: {} }) => ({
+      nombre: route.params.nombre,
     }),
   },
   { path: "/nuevo", component: NewFile },

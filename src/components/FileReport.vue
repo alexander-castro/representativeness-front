@@ -1,24 +1,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Bar } from "vue-chartjs";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from "chart.js";
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
 
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale
-);
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 export default defineComponent({
   props: { nombre: String, fuerza: Number },
@@ -36,6 +21,8 @@ export default defineComponent({
       matrixPRows: [],
       matrixP: [],
       list: [],
+      representativenessAverge: 0.0,
+      totalCount: 0,
       graph: { name: "" },
       chartData: {
         labels: ["January", "February", "March"],
@@ -50,7 +37,6 @@ export default defineComponent({
     };
   },
   mounted() {
-    console.log(this.fuerza);
     this.fetchData();
   },
   methods: {
@@ -67,6 +53,9 @@ export default defineComponent({
       this.matrixPRows = data.matrixPRows;
       this.matrixP = data.matrixP;
       this.list = data.list;
+      const representativenessTotal = this.list.reduce((accumulator, currentValue) => accumulator + currentValue[4], 0);
+      this.totalCount = this.list.reduce((accumulator, currentValue) => accumulator + currentValue[2], 0);
+      this.representativenessAverge = representativenessTotal / this.list.length;
       this.graph = data.graph;
     },
   },
@@ -79,12 +68,14 @@ export default defineComponent({
     <h2 class="subtitle">Datos originales:</h2>
     <table class="table">
       <tr>
-        <th v-for="column in columns" :key="column">{{ column }}</th>
+        <th v-for="(column, index) in columns" :key="column" :class="{ 'is-selected': index == columns.length - 1 }">
+          {{ column }}
+        </th>
       </tr>
       <tr v-for="item in data" :key="item">
-        <td>{{ item[0] }}</td>
-        <td>{{ item[1] }}</td>
-        <td>{{ item[2] }}</td>
+        <td v-for="(element, j) in item" :key="element" :class="{ 'is-selected': j == Object.keys(item).length - 1 }">
+          {{ element }}
+        </td>
       </tr>
     </table>
   </div>
@@ -94,12 +85,22 @@ export default defineComponent({
         <h2 class="subtitle">Datos convertidos a categorias binarias:</h2>
         <table class="table">
           <tr>
-            <th v-for="column in columns" :key="column">{{ column }}</th>
+            <th
+              v-for="(column, index) in columns"
+              :key="column"
+              :class="{ 'is-selected': index == columns.length - 1 }"
+            >
+              {{ column }}
+            </th>
           </tr>
           <tr v-for="item in binaryData" :key="item">
-            <td>{{ item[0] }}</td>
-            <td>{{ item[1] }}</td>
-            <td>{{ item[2] }}</td>
+            <td
+              v-for="(element, j) in item"
+              :key="element"
+              :class="{ 'is-selected': j == Object.keys(item).length - 1 }"
+            >
+              {{ element }}
+            </td>
           </tr>
         </table>
       </div>
@@ -150,6 +151,13 @@ export default defineComponent({
         <td>{{ row[4] }}%</td>
       </tr>
     </table>
+    <h4 class="title is-4">
+      Porcentaje promedio de representatividad:
+      {{ representativenessAverge.toFixed(2) }} %
+    </h4>
+    <progress class="progress is-success" v-bind:value="representativenessAverge" max="100">
+      {{ representativenessAverge.toFixed(2) }}%
+    </progress>
     <h2 class="subtitle">
       {{ graph.name }}
     </h2>
