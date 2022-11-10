@@ -6,11 +6,12 @@ import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, Li
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 export default defineComponent({
-  props: { nombre: String, fuerza: Number },
+  props: { nombre: String, fuerza: String },
   components: { Bar },
   data() {
     return {
       API: this.$API,
+      colors: ["#0085c3", "#7ab800", "#f2af00", "#dc5034", "#ce1126", "#b7295a", "#6e2585"],
       columns: [],
       data: {},
       isValidData: true,
@@ -23,17 +24,7 @@ export default defineComponent({
       list: [],
       representativenessAverge: 0.0,
       countAverage: 0,
-      graph: { name: "" },
-      chartData: {
-        labels: ["January", "February", "March"],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [40, 20, 12],
-          },
-        ],
-      },
+      chartData: [],
     };
   },
   mounted() {
@@ -57,52 +48,99 @@ export default defineComponent({
         this.list.reduce((accumulator, currentValue) => accumulator + currentValue[4], 0) / this.list.length;
       this.countAverage =
         this.list.reduce((accumulator, currentValue) => accumulator + currentValue[2], 0) / this.list.length;
-      this.graph = data.graph;
+      let graphs: Record<string, { labels: Array<string>; data: Array<Number> }> = {};
+      for (let element of this.list) {
+        console.log(element);
+        if (element[0] in graphs) {
+          graphs[element[0]].labels.push(element[1]);
+          graphs[element[0]].data.push(element[2]);
+        } else {
+          graphs[element[0]] = { labels: [element[1]], data: [element[2]] };
+        }
+      }
+      let i = 0;
+      for (let graph in graphs) {
+        this.chartData.push(this.generate_char(i++, graph, graphs[graph].labels, graphs[graph].data));
+      }
+    },
+    remove_quotes(row: String) {
+      return row.toString().replace('"', "");
+    },
+    calculate_rgba_opacity(index: number, size: number) {
+      const opacity = 1 - (1 / (size + 4)) * index;
+      return `rgba(97, 179, 222, ${opacity})`;
+    },
+    generate_char(i: number, name: String, labels: Array<String>, data: Array<Number>) {
+      return {
+        labels: labels,
+        datasets: [
+          {
+            label: name,
+            backgroundColor: this.colors[i],
+            data: data,
+          },
+        ],
+      };
     },
   },
 });
 </script>
 
 <style>
+.graph {
+  width: 300px;
+  height: 300px;
+}
+.p-matrix-numbers {
+  color: white;
+  text-align: center !important;
+}
 .red-value {
-  background-color: red;
+  background-color: #ff3c41;
 }
+
 .yellow-value {
-  background-color: yellow;
+  background-color: #fcd000;
 }
+
 .green-value {
-  background-color: green;
+  background-color: #47cf73;
 }
 </style>
 
 <template>
   <h1 class="title">Dataset: {{ nombre }} - {{ fuerza }}</h1>
   <div class="block">
-    <h2 class="subtitle">Datos originales:</h2>
-    <table class="table">
-      <tr>
-        <th v-for="(column, index) in columns" :key="column" :class="{ 'is-selected': index == columns.length - 1 }">
-          {{ column }}
-        </th>
-      </tr>
-      <tr v-for="item in data" :key="item">
-        <td v-for="(element, j) in item" :key="element" :class="{ 'is-selected': j == Object.keys(item).length - 1 }">
-          {{ element }}
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="block" v-if="isValidData">
     <div class="columns">
       <div class="column">
-        <h2 class="subtitle">Datos convertidos a categorias binarias:</h2>
+        <h2 class="subtitle">Datos originales:</h2>
         <table class="table">
           <tr>
             <th
               v-for="(column, index) in columns"
               :key="column"
-              :class="{ 'is-selected': index == columns.length - 1 }"
-            >
+              :class="{ 'is-selected': index == columns.length - 1 }">
+              {{ column }}
+            </th>
+          </tr>
+          <tr v-for="item in data" :key="item">
+            <td
+              v-for="(element, j) in item"
+              :key="element"
+              :class="{ 'is-selected': j == Object.keys(item).length - 1 }">
+              {{ element }}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="column" v-if="isValidData">
+        <h2 class="subtitle">Datos en categorias binarias:</h2>
+        <table class="table">
+          <tr>
+            <th
+              v-for="(column, index) in columns"
+              :key="column"
+              :class="{ 'is-selected': index == columns.length - 1 }">
               {{ column }}
             </th>
           </tr>
@@ -110,14 +148,13 @@ export default defineComponent({
             <td
               v-for="(element, j) in item"
               :key="element"
-              :class="{ 'is-selected': j == Object.keys(item).length - 1 }"
-            >
+              :class="{ 'is-selected': j == Object.keys(item).length - 1 }">
               {{ element }}
             </td>
           </tr>
         </table>
       </div>
-      <div class="column">
+      <div class="column" v-if="isValidData">
         <h2 class="subtitle">Categorias:</h2>
         <table class="table">
           <tr>
@@ -134,14 +171,16 @@ export default defineComponent({
         </table>
       </div>
     </div>
+  </div>
+  <div class="block">
     <h2 class="subtitle">Matriz P:</h2>
-    <table class="table">
+    <table class="table is-bordered">
       <tr>
         <th>Fila\Columna</th>
         <th v-for="column in matrixPColumns" :key="column">{{ column }}</th>
       </tr>
       <tr v-for="(row, index) in matrixPRows" :key="row">
-        <td>{{ row }}</td>
+        <td>{{ remove_quotes(row) }}</td>
         <td
           v-for="row_matrix in matrixP[index]"
           :key="row_matrix"
@@ -150,6 +189,7 @@ export default defineComponent({
             'yellow-value': row_matrix == countAverage,
             'green-value': row_matrix > countAverage,
           }"
+          class="p-matrix-numbers"
         >
           {{ row_matrix }}
         </td>
@@ -158,13 +198,19 @@ export default defineComponent({
     <h2 class="subtitle">Combinaciones:</h2>
     <table class="table is-bordered is-striped">
       <tr>
+        <th>Top</th>
         <th>Combinación</th>
         <th>Valores</th>
         <th>Apariciones</th>
         <th>Porcentaje</th>
         <th>Porcentaje normalizado</th>
       </tr>
-      <tr v-for="row in list" :key="row">
+      <tr
+        v-for="(row, index) in list"
+        :key="row"
+        v-bind:style="{ 'background': calculate_rgba_opacity(index, list.length) }"
+      >
+        <td>{{ index + 1 }}</td>
         <td>{{ row[0] }}</td>
         <td>{{ row[1] }}</td>
         <td>{{ row[2] }}</td>
@@ -179,12 +225,14 @@ export default defineComponent({
     <progress class="progress is-success" v-bind:value="representativenessAverge" max="100">
       {{ representativenessAverge.toFixed(2) }}%
     </progress>
-    <h2 class="subtitle">
-      {{ graph.name }}
-    </h2>
-    <Bar :chart-data="chartData" />
+    <h2 class="subtitle">Reportes por fuerza: {{ fuerza }}</h2>
+    <div class="columns" v-if="chartData.length > 0">
+      <div class="column" v-for="data in chartData" :key="data">
+        <Bar :chart-data="data" class="graph" />
+      </div>
+    </div>
   </div>
-  <div class="notification is-danger" v-else>
+  <div class="notification is-danger" v-if="!isValidData">
     Las siguientes columnas del conjunto de datos cargado no son binarias:
     <ul v-for="invalid_column in invalidColumns" :key="invalid_column">
       <li>{{ invalid_column }}</li>
