@@ -4,11 +4,14 @@ import { defineComponent } from "vue";
 export default defineComponent({
   data() {
     return {
+      API: this.$API,
       files: [],
       file: "",
       showModal: false,
+      showModalColumns: false,
       force: 2,
-      API: this.$API,
+      columns: [],
+      columnsSelection: [] as Array<string>,
     };
   },
   mounted() {
@@ -25,6 +28,14 @@ export default defineComponent({
     },
     closeForceModal() {
       this.showModal = false;
+    },
+    async openColumnsModal(newLink: string) {
+      this.file = newLink;
+      this.columns = await (await fetch(`${this.API}files/${this.file}/columns`)).json();
+      this.showModalColumns = true;
+    },
+    closeColumnsModal() {
+      this.showModalColumns = false;
     },
   },
 });
@@ -52,15 +63,9 @@ export default defineComponent({
           </button>
         </td>
         <td>
-          <router-link
-            :to="{
-              name: 'clasificadores',
-              params: { nombre: file },
-            }"
-            class="button is-info"
-          >
+          <button @click="openColumnsModal(file)" class="button is-link" data-target="modal-columns">
             Clasificador
-          </router-link>
+          </button>
         </td>
       </tr>
     </table>
@@ -102,6 +107,42 @@ export default defineComponent({
             Procesar {{ file }}
           </router-link>
           <button class="button" @click="closeForceModal">Cancel</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="modal-columns" :class="{ 'is-active': showModalColumns }" v-if="showModalColumns">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Configurar clasificador</p>
+          <button class="delete" aria-label="close" @click="closeColumnsModal"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Columnas:</label>
+            </div>
+            <div class="field-body" style="display: flex; flex-direction: column">
+              <label class="checkbox" v-for="column in columns" v-bind:key="column">
+                <input type="checkbox" :id="column" :value="column" v-model="columnsSelection" />
+                {{ column }}
+              </label>
+            </div>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <router-link
+            :to="{
+              name: 'clasificadores',
+              params: { nombre: file, columnas: columnsSelection },
+            }"
+            class="button is-link"
+          >
+            Procesar {{ file }}
+          </router-link>
+          <button class="button" @click="closeColumnsModal">Cancel</button>
         </footer>
       </div>
     </div>

@@ -50,7 +50,6 @@ export default defineComponent({
         this.list.reduce((accumulator, currentValue) => accumulator + currentValue[2], 0) / this.list.length;
       let graphs: Record<string, { labels: Array<string>; data: Array<Number> }> = {};
       for (let element of this.list) {
-        console.log(element);
         if (element[0] in graphs) {
           graphs[element[0]].labels.push(element[1]);
           graphs[element[0]].data.push(element[2]);
@@ -208,7 +207,7 @@ export default defineComponent({
       <tr
         v-for="(row, index) in list"
         :key="row"
-        v-bind:style="{ 'background': calculate_rgba_opacity(index, list.length) }"
+        v-bind:style="{ background: calculate_rgba_opacity(index, list.length) }"
       >
         <td>{{ index + 1 }}</td>
         <td>{{ row[0] }}</td>

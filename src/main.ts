@@ -21,11 +21,12 @@ const routes = [
     }),
   },
   {
-    path: "/clasificadores/:nombre",
+    path: "/clasificadores/:nombre/:columnas*",
     name: "clasificadores",
     component: ClassifierReport,
-    props: (route: { params: { nombre: any }; query: {} }) => ({
+    props: (route: { params: { nombre: any; columnas: any }; query: {} }) => ({
       nombre: route.params.nombre,
+      columnas: route.params.columnas,
     }),
   },
   { path: "/nuevo", component: NewFile },

@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  props: { nombre: String },
+  props: { nombre: String, columnas: Array },
   data() {
     return {
       API: this.$API,
@@ -19,7 +19,7 @@ export default defineComponent({
   },
   methods: {
     async fetchData() {
-      const url = `${this.API}report/${this.nombre}`;
+      const url = `${this.API}report/${this.nombre}/${this.columnas}`;
       const data = await (await fetch(url)).json();
       this.columns = data.columns;
       this.binary_categories = data.binary_categories;
