@@ -1,11 +1,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import GeneralDataReport from "./GeneralDataReport.vue";
 
 export default defineComponent({
-  props: { nombre: String, columnas: Array },
+  components: {
+    GeneralDataReport,
+  },
+  props: { nombre: String, fuerza: String, columnas: Array },
   data() {
     return {
       API: this.$API,
+      data: [],
+      binaryData: [],
       columns: [],
       binary_categories: {} as { [key: string]: any },
       x_test: [],
@@ -21,6 +27,8 @@ export default defineComponent({
     async fetchData() {
       const url = `${this.API}report/${this.nombre}/${this.columnas}`;
       const data = await (await fetch(url)).json();
+      this.data = data.data;
+      this.binaryData = data.binary_data;
       this.columns = data.columns;
       this.binary_categories = data.binary_categories;
       this.x_test = data.x_test;
@@ -36,6 +44,14 @@ export default defineComponent({
 });
 </script>
 <template>
+  <GeneralDataReport
+    :name="nombre"
+    :force="fuerza"
+    :columns="columns"
+    :data="data"
+    :binary-data="binaryData"
+    :binary-categories="binary_categories"
+  />
   <h3 class="title is-4">Predicciones con muestra al azar:</h3>
   <table class="table">
     <tr>

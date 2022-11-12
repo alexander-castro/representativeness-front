@@ -118,7 +118,8 @@ export default defineComponent({
             <th
               v-for="(column, index) in columns"
               :key="column"
-              :class="{ 'is-selected': index == columns.length - 1 }">
+              :class="{ 'is-selected': index == columns.length - 1 }"
+            >
               {{ column }}
             </th>
           </tr>
@@ -126,7 +127,8 @@ export default defineComponent({
             <td
               v-for="(element, j) in item"
               :key="element"
-              :class="{ 'is-selected': j == Object.keys(item).length - 1 }">
+              :class="{ 'is-selected': j == Object.keys(item).length - 1 }"
+            >
               {{ element }}
             </td>
           </tr>
@@ -139,7 +141,8 @@ export default defineComponent({
             <th
               v-for="(column, index) in columns"
               :key="column"
-              :class="{ 'is-selected': index == columns.length - 1 }">
+              :class="{ 'is-selected': index == columns.length - 1 }"
+            >
               {{ column }}
             </th>
           </tr>
@@ -147,7 +150,8 @@ export default defineComponent({
             <td
               v-for="(element, j) in item"
               :key="element"
-              :class="{ 'is-selected': j == Object.keys(item).length - 1 }">
+              :class="{ 'is-selected': j == Object.keys(item).length - 1 }"
+            >
               {{ element }}
             </td>
           </tr>
