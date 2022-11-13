@@ -1,32 +1,23 @@
 import { createApp } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
-import App from "./App.vue";
 import "bulma/css/bulma.min.css";
 
+import App from "./App.vue";
 import FileList from "./components/FileList.vue";
 import NewFile from "./components/NewFile.vue";
-import FileReport from "./components/FileReport.vue";
 import NotFound from "./components/NotFound.vue";
-import ClassifierReport from "./components/ClassifierReport.vue";
+import MainReport from "./components/MainReport.vue";
 
 const routes = [
   { path: "/", component: FileList },
   {
     path: "/reportes/:nombre",
     name: "reportes",
-    component: FileReport,
-    props: (route: { params: { nombre: any }; query: { fuerza: any } }) => ({
+    component: MainReport,
+    props: (route: { params: { nombre: any }; query: { columnas: any; fuerza: any } }) => ({
       nombre: route.params.nombre,
+      columnas: route.query.columnas,
       fuerza: route.query.fuerza,
-    }),
-  },
-  {
-    path: "/clasificadores/:nombre/:columnas*",
-    name: "clasificadores",
-    component: ClassifierReport,
-    props: (route: { params: { nombre: any; columnas: any }; query: {} }) => ({
-      nombre: route.params.nombre,
-      columnas: route.params.columnas,
     }),
   },
   { path: "/nuevo", component: NewFile },

@@ -7,8 +7,7 @@ export default defineComponent({
       API: this.$API,
       files: [],
       file: "",
-      showModal: false,
-      showModalColumns: false,
+      showConfigModal: false,
       force: 2,
       columns: [],
       columnsSelection: [] as Array<string>,
@@ -22,20 +21,14 @@ export default defineComponent({
       const url = `${this.API}`;
       this.files = await (await fetch(url)).json();
     },
-    openForceModal(newLink: string) {
-      this.file = newLink;
-      this.showModal = true;
-    },
-    closeForceModal() {
-      this.showModal = false;
-    },
-    async openColumnsModal(newLink: string) {
+    async openConfigModal(newLink: string) {
       this.file = newLink;
       this.columns = await (await fetch(`${this.API}files/${this.file}/columns`)).json();
-      this.showModalColumns = true;
+      this.columnsSelection = this.columns;
+      this.showConfigModal = true;
     },
-    closeColumnsModal() {
-      this.showModalColumns = false;
+    closeConfigModal() {
+      this.showConfigModal = false;
     },
   },
 });
@@ -51,20 +44,17 @@ export default defineComponent({
       <tr>
         <th>Archivo</th>
         <th>Ver reporte representatividad</th>
-        <th>Ver clasificador representatividad</th>
       </tr>
       <tr v-for="file in files" :key="file">
         <td style="vertical-align: middle">
           {{ file }}
         </td>
         <td>
-          <button @click="openForceModal(file)" class="button is-link" data-target="modal-force">
-            Representatividad
-          </button>
+          <button @click="openConfigModal(file)" class="button is-link" data-target="modal-config">Reporte</button>
         </td>
         <td>
-          <button @click="openColumnsModal(file)" class="button is-link" data-target="modal-columns">
-            Clasificador
+          <button @click="openConfigModal(file)" class="button is-link" data-target="modal-config">
+            Reporte comparativo
           </button>
         </td>
       </tr>
@@ -73,13 +63,13 @@ export default defineComponent({
   <div class="block">
     <router-link to="/nuevo" class="button is-link is-light"> Subir archivo </router-link>
   </div>
-  <div class="modal" id="modal-force" :class="{ 'is-active': showModal }" v-if="showModal">
+  <div class="modal" id="modal-config" :class="{ 'is-active': showConfigModal }" v-if="showConfigModal">
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Configurar</p>
-          <button class="delete" aria-label="close" @click="closeForceModal"></button>
+          <p class="modal-card-title">Configurar clasificador</p>
+          <button class="delete" aria-label="close" @click="closeConfigModal"></button>
         </header>
         <section class="modal-card-body">
           <div class="field is-horizontal">
@@ -94,32 +84,6 @@ export default defineComponent({
               </div>
             </div>
           </div>
-        </section>
-        <footer class="modal-card-foot">
-          <router-link
-            :to="{
-              name: 'reportes',
-              params: { nombre: file },
-              query: { fuerza: force },
-            }"
-            class="button is-link"
-          >
-            Procesar {{ file }}
-          </router-link>
-          <button class="button" @click="closeForceModal">Cancel</button>
-        </footer>
-      </div>
-    </div>
-  </div>
-  <div class="modal" id="modal-columns" :class="{ 'is-active': showModalColumns }" v-if="showModalColumns">
-    <div class="modal-background"></div>
-    <div class="modal-content">
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Configurar clasificador</p>
-          <button class="delete" aria-label="close" @click="closeColumnsModal"></button>
-        </header>
-        <section class="modal-card-body">
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Columnas:</label>
@@ -135,14 +99,15 @@ export default defineComponent({
         <footer class="modal-card-foot">
           <router-link
             :to="{
-              name: 'clasificadores',
-              params: { nombre: file, columnas: columnsSelection },
+              name: 'reportes',
+              params: { nombre: file },
+              query: { fuerza: force, columnas: columnsSelection },
             }"
             class="button is-link"
           >
             Procesar {{ file }}
           </router-link>
-          <button class="button" @click="closeColumnsModal">Cancel</button>
+          <button class="button" @click="closeConfigModal">Cancel</button>
         </footer>
       </div>
     </div>

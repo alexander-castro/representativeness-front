@@ -6,18 +6,12 @@ import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, Li
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 export default defineComponent({
-  props: { nombre: String, fuerza: String },
+  props: { name: String, force: String, type: String },
   components: { Bar },
   data() {
     return {
       API: this.$API,
       colors: ["#0085c3", "#7ab800", "#f2af00", "#dc5034", "#ce1126", "#b7295a", "#6e2585"],
-      columns: [],
-      data: {},
-      isValidData: true,
-      invalidColumns: [],
-      binaryData: {},
-      binaryCategories: [],
       matrixPColumns: [],
       matrixPRows: [],
       matrixP: [],
@@ -32,14 +26,8 @@ export default defineComponent({
   },
   methods: {
     async fetchData() {
-      const url = `${this.API}files/${this.nombre}?force=${this.fuerza}`;
+      const url = `${this.API}files/${this.name}?type=${this.type}&force=${this.force}`;
       const data = await (await fetch(url)).json();
-      this.columns = data.columns;
-      this.data = data.data;
-      this.isValidData = data.isValidData;
-      this.invalidColumns = data.invalidColumns;
-      this.binaryData = data.binaryData;
-      this.binaryCategories = data.binaryCategories;
       this.matrixPColumns = data.matrixPColumns;
       this.matrixPRows = data.matrixPRows;
       this.matrixP = data.matrixP;
@@ -108,73 +96,7 @@ export default defineComponent({
 </style>
 
 <template>
-  <h1 class="title">Dataset: {{ nombre }} - {{ fuerza }}</h1>
-  <div class="block">
-    <div class="columns">
-      <div class="column">
-        <h2 class="subtitle">Datos originales:</h2>
-        <table class="table">
-          <tr>
-            <th
-              v-for="(column, index) in columns"
-              :key="column"
-              :class="{ 'is-selected': index == columns.length - 1 }"
-            >
-              {{ column }}
-            </th>
-          </tr>
-          <tr v-for="item in data" :key="item">
-            <td
-              v-for="(element, j) in item"
-              :key="element"
-              :class="{ 'is-selected': j == Object.keys(item).length - 1 }"
-            >
-              {{ element }}
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="column" v-if="isValidData">
-        <h2 class="subtitle">Datos en categorias binarias:</h2>
-        <table class="table">
-          <tr>
-            <th
-              v-for="(column, index) in columns"
-              :key="column"
-              :class="{ 'is-selected': index == columns.length - 1 }"
-            >
-              {{ column }}
-            </th>
-          </tr>
-          <tr v-for="item in binaryData" :key="item">
-            <td
-              v-for="(element, j) in item"
-              :key="element"
-              :class="{ 'is-selected': j == Object.keys(item).length - 1 }"
-            >
-              {{ element }}
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="column" v-if="isValidData">
-        <h2 class="subtitle">Categorias:</h2>
-        <table class="table">
-          <tr>
-            <th>Categoria\Valor</th>
-            <th>0</th>
-            <th>1</th>
-          </tr>
-          <tr v-for="(value, key) in binaryCategories" :key="key">
-            <td>{{ key }}</td>
-            <td v-for="(_, categoryKey) in value" :key="categoryKey">
-              {{ categoryKey }}
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </div>
+  <h1 class="title">Dataset: {{ name }} - {{ force }}</h1>
   <div class="block">
     <h2 class="subtitle">Matriz P:</h2>
     <table class="table is-bordered">
@@ -228,18 +150,12 @@ export default defineComponent({
     <progress class="progress is-success" v-bind:value="representativenessAverge" max="100">
       {{ representativenessAverge.toFixed(2) }}%
     </progress>
-    <h2 class="subtitle">Reportes por fuerza: {{ fuerza }}</h2>
+    <h2 class="subtitle">Reportes por fuerza: {{ force }}</h2>
     <div class="columns" v-if="chartData.length > 0">
       <div class="column" v-for="data in chartData" :key="data">
         <Bar :chart-data="data" class="graph" />
       </div>
     </div>
-  </div>
-  <div class="notification is-danger" v-if="!isValidData">
-    Las siguientes columnas del conjunto de datos cargado no son binarias:
-    <ul v-for="invalid_column in invalidColumns" :key="invalid_column">
-      <li>{{ invalid_column }}</li>
-    </ul>
   </div>
   <router-link to="/" class="button is-link is-light">Volver</router-link>
 </template>

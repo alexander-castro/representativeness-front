@@ -113,5 +113,4 @@ export default defineComponent({
       <li>{{ invalid_column }}</li>
     </ul>
   </div>
-  <router-link to="/" class="button is-link is-light">Volver</router-link>
 </template>

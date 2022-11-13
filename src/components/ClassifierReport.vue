@@ -1,57 +1,47 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import GeneralDataReport from "./GeneralDataReport.vue";
 
 export default defineComponent({
-  components: {
-    GeneralDataReport,
+  props: {
+    columns: {
+      type: Array,
+      default: () => [],
+    },
+    x_test: {
+      type: Array,
+      default: () => [],
+    },
+    y_pred: {
+      type: Array,
+      default: () => [],
+    },
+    y_test: {
+      type: Array,
+      default: () => [],
+    },
+    score: {
+      type: Number,
+      default: 0,
+    },
+    binaryCategories: {
+      type: Object,
+      default: () => {},
+    },
   },
-  props: { nombre: String, fuerza: String, columnas: Array },
   data() {
     return {
       API: this.$API,
-      data: [],
-      binaryData: [],
-      columns: [],
-      binary_categories: {} as { [key: string]: any },
-      x_test: [],
-      y_pred: [],
-      y_test: [],
-      score: 0,
     };
   },
-  mounted() {
-    this.fetchData();
-  },
   methods: {
-    async fetchData() {
-      const url = `${this.API}report/${this.nombre}/${this.columnas}`;
-      const data = await (await fetch(url)).json();
-      this.data = data.data;
-      this.binaryData = data.binary_data;
-      this.columns = data.columns;
-      this.binary_categories = data.binary_categories;
-      this.x_test = data.x_test;
-      this.y_pred = data.y_pred;
-      this.y_test = data.y_test;
-      this.score = data.score;
-    },
-    translate(column: string, element: number) {
-      const object = this.binary_categories[column];
+    translate(column: any, element: number) {
+      const object = this.$props.binaryCategories[column];
       return Object.keys(object).find((key) => object[key] === element);
     },
   },
 });
 </script>
 <template>
-  <GeneralDataReport
-    :name="nombre"
-    :force="fuerza"
-    :columns="columns"
-    :data="data"
-    :binary-data="binaryData"
-    :binary-categories="binary_categories"
-  />
   <h3 class="title is-4">Predicciones con muestra al azar:</h3>
   <table class="table">
     <tr>
