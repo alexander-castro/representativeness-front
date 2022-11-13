@@ -7,6 +7,7 @@ import FileList from "./components/FileList.vue";
 import NewFile from "./components/NewFile.vue";
 import NotFound from "./components/NotFound.vue";
 import MainReport from "./components/MainReport.vue";
+import RepresentativenessReport from "./components/RepresentativenessReport.vue";
 
 const routes = [
   { path: "/", component: FileList },
@@ -14,10 +15,21 @@ const routes = [
     path: "/reportes/:nombre",
     name: "reportes",
     component: MainReport,
-    props: (route: { params: { nombre: any }; query: { columnas: any; fuerza: any } }) => ({
+    props: (route: { params: { nombre: any }; query: { columnas: any; fuerza: any; muestreo: any } }) => ({
       nombre: route.params.nombre,
       columnas: route.query.columnas,
       fuerza: route.query.fuerza,
+      muestreo: route.query.muestreo,
+    }),
+  },
+  {
+    path: "/reporte/:nombre",
+    name: "reporte",
+    component: RepresentativenessReport,
+    props: (route: { params: { nombre: any }; query: { columnas: any; fuerza: any } }) => ({
+      name: route.params.nombre,
+      force: route.query.fuerza,
+      type: "original",
     }),
   },
   { path: "/nuevo", component: NewFile },

@@ -10,7 +10,7 @@ export default defineComponent({
     ClassifierReport,
     RepresentativenessReport,
   },
-  props: { nombre: String, fuerza: String, columnas: Array },
+  props: { nombre: String, fuerza: String, columnas: Array, muestreo: String },
   data() {
     return {
       API: this.$API,
@@ -29,7 +29,7 @@ export default defineComponent({
   },
   methods: {
     async fetchData() {
-      const url = `${this.API}report/${this.nombre}/${this.columnas}`;
+      const url = `${this.API}report/${this.nombre}/${this.columnas}?muestreo=${this.muestreo}`;
       const data = await (await fetch(url)).json();
       this.data = data.data;
       this.binaryData = data.binary_data;

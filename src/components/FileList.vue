@@ -9,6 +9,7 @@ export default defineComponent({
       file: "",
       showConfigModal: false,
       force: 2,
+      sampling: "random",
       columns: [],
       columnsSelection: [] as Array<string>,
     };
@@ -50,7 +51,16 @@ export default defineComponent({
           {{ file }}
         </td>
         <td>
-          <button @click="openConfigModal(file)" class="button is-link" data-target="modal-config">Reporte</button>
+          <router-link
+            :to="{
+              name: 'reporte',
+              params: { nombre: file },
+              query: { fuerza: 2 },
+            }"
+            class="button is-link"
+          >
+            Reporte general
+          </router-link>
         </td>
         <td>
           <button @click="openConfigModal(file)" class="button is-link" data-target="modal-config">
@@ -72,6 +82,21 @@ export default defineComponent({
           <button class="delete" aria-label="close" @click="closeConfigModal"></button>
         </header>
         <section class="modal-card-body">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Muestreo:</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="select">
+                  <select v-model="sampling">
+                    <option value="random">Aleatorio</option>
+                    <option value="stratified">Estratificado</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Fuerza:</label>
@@ -101,7 +126,7 @@ export default defineComponent({
             :to="{
               name: 'reportes',
               params: { nombre: file },
-              query: { fuerza: force, columnas: columnsSelection },
+              query: { fuerza: force, columnas: columnsSelection, muestreo: sampling },
             }"
             class="button is-link"
           >
