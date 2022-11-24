@@ -59,10 +59,10 @@ export default defineComponent({
   />
   <div class="block">
     <div class="columns">
-      <div class="column">
+      <div class="column" style="max-width: 50%">
         <RepresentativenessReport :name="nombre" :force="fuerza" :type="'train'" />
       </div>
-      <div class="column">
+      <div class="column" style="max-width: 50%">
         <RepresentativenessReport :name="nombre" :force="fuerza" :type="'test'" />
       </div>
     </div>

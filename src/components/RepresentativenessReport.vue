@@ -151,7 +151,7 @@ export default defineComponent({
       {{ representativenessAverge.toFixed(2) }}%
     </progress>
     <h2 class="subtitle">Reportes por fuerza: {{ force }}</h2>
-    <div class="columns" v-if="chartData.length > 0">
+    <div class="columns" v-if="chartData.length > 0" style="max-width: 50%; overflow-x: scroll">
       <div class="column" v-for="data in chartData" :key="data">
         <Bar :chart-data="data" class="graph" />
       </div>
