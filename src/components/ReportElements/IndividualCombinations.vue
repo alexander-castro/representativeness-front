@@ -18,15 +18,15 @@ export default defineComponent({
 </script>
 
 <template>
-  <h2 class="subtitle">Combinaciones:</h2>
+  <h2 class="subtitle">{{ $t("message.combinations") }}</h2>
   <table class="table is-bordered is-striped">
     <tr>
       <th>Top</th>
-      <th>Combinación</th>
-      <th>Valores</th>
-      <th>Apariciones</th>
-      <th>Porcentaje</th>
-      <th>Porcentaje normalizado</th>
+      <th>{{ $t("message.combination") }}</th>
+      <th>{{ $t("message.values") }}</th>
+      <th>{{ $t("message.count") }}</th>
+      <th>{{ $t("message.percentage") }}</th>
+      <th>{{ $t("message.normalizedPercentage") }}</th>
     </tr>
     <tr
       v-for="(row, index) in list"
