@@ -37,14 +37,14 @@ export default defineComponent({
 
 <template>
   <div class="block">
-    <h1 class="title">Analizador de representatividad</h1>
+    <h1 class="title">{{ $t("message.title") }}</h1>
   </div>
   <div class="block">
-    <h2 class="subtitle">Conjuntos de datos</h2>
+    <h2 class="subtitle">{{ $t("message.dataSets") }}</h2>
     <table class="table" style="text-align: center">
       <tr>
-        <th>Archivo</th>
-        <th>Ver reporte representatividad</th>
+        <th>{{ $t("message.file") }}</th>
+        <th colspan="2">{{ $t("message.reports") }}</th>
       </tr>
       <tr v-for="file in files" :key="file">
         <td style="vertical-align: middle">
@@ -59,19 +59,19 @@ export default defineComponent({
             }"
             class="button is-link"
           >
-            Reporte general
+            {{ $t("message.generalReport") }}
           </router-link>
         </td>
         <td>
           <button @click="openConfigModal(file)" class="button is-link" data-target="modal-config">
-            Reporte comparativo
+            {{ $t("message.comparativeReport") }}
           </button>
         </td>
       </tr>
     </table>
   </div>
   <div class="block">
-    <router-link to="/nuevo" class="button is-link is-light"> Subir archivo </router-link>
+    <router-link to="/nuevo" class="button is-link is-light"> {{ $t("message.uploadFile") }} </router-link>
   </div>
   <div class="modal" id="modal-config" :class="{ 'is-active': showConfigModal }" v-if="showConfigModal">
     <div class="modal-background"></div>

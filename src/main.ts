@@ -3,11 +3,19 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import "bulma/css/bulma.min.css";
 
 import App from "./App.vue";
+import { createI18n } from "vue-i18n";
+import { messages } from "./i18n/translations.js";
 import FileList from "./components/FileList.vue";
 import NewFile from "./components/NewFile.vue";
 import NotFound from "./components/NotFound.vue";
 import MainReport from "./components/MainReport.vue";
 import RepresentativenessReport from "./components/RepresentativenessReport.vue";
+
+const i18n = createI18n({
+  locale: "en",
+  fallbackLocale: "es",
+  messages,
+});
 
 const routes = [
   { path: "/", component: FileList },
@@ -44,4 +52,5 @@ const router = createRouter({
 const app = createApp(App);
 app.config.globalProperties.$API = "http://127.0.0.1:5000/";
 app.use(router);
+app.use(i18n);
 app.mount("#app");

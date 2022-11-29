@@ -1,3 +1,21 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+import Navbar from "./components/NavbarPanel.vue";
+
+export default defineComponent({
+  components: { Navbar },
+});
+</script>
+
 <template>
-  <router-view></router-view>
+  <navbar />
+  <section class="main-panel">
+    <router-view></router-view>
+  </section>
 </template>
+
+<style scoped>
+.main-panel {
+  margin: 20px 40px;
+}
+</style>

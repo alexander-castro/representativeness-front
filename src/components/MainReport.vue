@@ -48,7 +48,6 @@ export default defineComponent({
 });
 </script>
 <template>
-  <router-link to="/" class="button is-link is-light">Home</router-link>
   <GeneralDataReport
     :name="nombre"
     :force="fuerza"
