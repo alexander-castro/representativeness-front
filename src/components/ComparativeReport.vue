@@ -1,14 +1,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import GeneralDataReport from "./GeneralDataReport.vue";
-import ClassifierReport from "./ClassifierReport.vue";
+import GeneralDataReport from "./ReportElements/GeneralData.vue";
+import ClassifierReport from "./ReportElements/Classifier.vue";
 import RepresentativenessReport from "./RepresentativenessReport.vue";
+import ComparativeCombinations from "./ReportElements/ComparativeCombinations.vue";
 
 export default defineComponent({
   components: {
     GeneralDataReport,
     ClassifierReport,
     RepresentativenessReport,
+    ComparativeCombinations,
   },
   props: { nombre: String, fuerza: String, columnas: Array, muestreo: String },
   data() {
@@ -66,6 +68,7 @@ export default defineComponent({
       </div>
     </div>
   </div>
+  <ComparativeCombinations />
   <ClassifierReport
     :columns="columns"
     :binary-categories="binaryCategories"

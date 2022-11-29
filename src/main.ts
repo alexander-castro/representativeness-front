@@ -8,7 +8,7 @@ import { messages } from "./i18n/translations.js";
 import FileList from "./components/FileList.vue";
 import NewFile from "./components/NewFile.vue";
 import NotFound from "./components/NotFound.vue";
-import MainReport from "./components/MainReport.vue";
+import MainReport from "./components/ComparativeReport.vue";
 import RepresentativenessReport from "./components/RepresentativenessReport.vue";
 
 const i18n = createI18n({
