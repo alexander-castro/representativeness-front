@@ -46,7 +46,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1 class="title">Dataset: {{ name }} / {{ type }} - {{ force }}</h1>
+  <h1 class="title">{{ $t("message.titleUploadFile") }}: {{ name }} / {{ type }} - {{ force }}</h1>
   <div class="block">
     <PMatrix
       :matrixP="matrixP"

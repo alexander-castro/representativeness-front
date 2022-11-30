@@ -8,8 +8,8 @@ import App from "./App.vue";
 import { createI18n } from "vue-i18n";
 import { messages } from "./i18n/translations.js";
 import FileList from "./components/FileList.vue";
-import NewFile from "./components/NewFile.vue";
-import NotFound from "./components/NotFound.vue";
+import NewFile from "./components/GeneralComponents/NewFile.vue";
+import NotFound from "./components/GeneralComponents/NotFound.vue";
 import MainReport from "./components/ComparativeReport.vue";
 import RepresentativenessReport from "./components/RepresentativenessReport.vue";
 

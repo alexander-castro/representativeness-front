@@ -36,19 +36,19 @@ export default defineComponent({
 
 <template>
   <div class="block" style="width: 50%">
-    <h1 class="title">Subir nuevo archivo</h1>
+    <h1 class="title">{{ $t("message.titleUploadFile") }}</h1>
     <div class="block">
       <input type="file" name="file" @change="changeFile" ref="file" />
     </div>
     <div class="block" style="display: flex; flex-direction: column">
-      <input type="submit" value="Cargar" class="button is-primary" @click="uploadFile" />
+      <button type="submit" class="button is-primary" @click="uploadFile">{{ $t("message.upload") }}</button>
     </div>
     <div class="block">
       <div class="notification is-danger" v-if="error">
-        <h1 class="subtitle">Error</h1>
+        <h1 class="subtitle">{{ $t("message.uploadError") }}</h1>
       </div>
       <div class="notification is-primary" v-if="message">
-        <h1 class="subtitle">The file was upload!</h1>
+        <h1 class="subtitle">{{ $t("message.uploadOk") }}</h1>
       </div>
     </div>
   </div>

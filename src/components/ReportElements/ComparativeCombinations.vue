@@ -20,7 +20,7 @@ export default defineComponent({
       this.filterList = this.list;
       this.trainAverage = store.trainAverage;
       this.testAverage = store.testAverage;
-    }, 300);
+    }, 500);
   },
   methods: {
     filter() {
