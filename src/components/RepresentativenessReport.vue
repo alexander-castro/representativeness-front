@@ -56,6 +56,6 @@ export default defineComponent({
     />
     <IndividualCombinations :list="list" v-if="type === 'original'" />
     <RepresentativenessMetric :representativeness-averge="representativenessAverge" />
-    <CombinationCharts :force="force" :list="list" v-if="list.length > 0" />
+    <CombinationCharts :force="force || '2'" :list="list" v-if="list.length > 0" />
   </div>
 </template>

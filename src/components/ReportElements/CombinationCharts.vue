@@ -20,7 +20,20 @@ export default defineComponent({
   data() {
     return {
       API: this.$API,
-      colors: ["#0085c3", "#7ab800", "#f2af00", "#dc5034", "#ce1126", "#b7295a", "#6e2585"],
+      colors: [
+        "#0085c3",
+        "#7ab800",
+        "#f2af00",
+        "#dc5034",
+        "#ce1126",
+        "#b7295a",
+        "#6e2585",
+        "#71c6c1",
+        "#5482ab",
+        "#009bbb",
+        "#444444",
+        "#eeeeee",
+      ],
       chartData: [] as Array<object>,
     };
   },

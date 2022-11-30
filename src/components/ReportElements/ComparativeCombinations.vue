@@ -8,8 +8,8 @@ export default defineComponent({
       filterDifference: "",
       filterCombinations: "",
       filterValues: "",
-      list: [],
-      filterList: [],
+      list: [] as Array<any>,
+      filterList: [] as Array<any>,
       trainAverage: 0,
       testAverage: 0,
     };

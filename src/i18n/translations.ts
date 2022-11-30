@@ -31,6 +31,8 @@ export const messages = {
       uploadOk: "The file was upload.",
       uploadError: "Error at file upload.",
       notFound: "Page not found.",
+      classificationResultYes: "Yes",
+      classificationResultNo: "No",
     },
   },
   es: {
@@ -65,6 +67,8 @@ export const messages = {
       uploadOk: "El archivo fue cargado con exito.",
       uploadError: "Error al cargar el archivo.",
       notFound: "La pagina no pudo ser encontrada.",
+      classificationResultYes: "Si",
+      classificationResultNo: "No",
     },
   },
 };

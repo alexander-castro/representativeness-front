@@ -28,7 +28,7 @@ export default defineComponent({
       default: () => true,
     },
     invalidColumns: {
-      type: Array,
+      type: Array<string>,
       default: () => [],
     },
     binaryCategories: {

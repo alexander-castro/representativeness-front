@@ -4,7 +4,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
   props: {
     columns: {
-      type: Array,
+      type: Array<string>,
       default: () => [],
     },
     x_test: {
@@ -12,11 +12,11 @@ export default defineComponent({
       default: () => [],
     },
     y_pred: {
-      type: Array,
+      type: Array<Number>,
       default: () => [],
     },
     y_test: {
-      type: Array,
+      type: Array<Array<string>>,
       default: () => [],
     },
     score: {
@@ -35,7 +35,7 @@ export default defineComponent({
     };
   },
   methods: {
-    translate(column: any, element: number) {
+    translate(column: any, element: Number) {
       const object = this.$props.binaryCategories[column];
       return Object.keys(object).find((key) => object[key] === element);
     },
@@ -48,15 +48,19 @@ export default defineComponent({
   color: white;
   text-align: center !important;
 }
+
 .red-value {
   background-color: #ff3c41;
 }
+
 .yellow-value {
   background-color: #fcd000;
 }
+
 .green-value {
   background-color: #47cf73;
 }
+
 .hide {
   display: none;
 }
@@ -83,9 +87,9 @@ export default defineComponent({
       v-for="(item, index) in x_test"
       :key="index"
       :class="{
-        'red-value': y_pred[index] != y_test[index][0],
-        'green-value': y_pred[index] == y_test[index][0],
-        hide: filter && y_pred[index] == y_test[index][0],
+        'red-value': y_pred[index] != +y_test[index][0],
+        'green-value': y_pred[index] == +y_test[index][0],
+        hide: filter && y_pred[index] == +y_test[index][0],
       }"
       class="p-matrix-numbers"
     >
@@ -96,7 +100,11 @@ export default defineComponent({
         {{ translate(columns[columns.length - 1], y_pred[index]) }}
       </td>
       <td>
-        {{ y_pred[index] == y_test[index][0] ? "Yes" : "No" }}
+        {{
+          y_pred[index] == +y_test[index][0]
+            ? $t("message.classificationResultYes")
+            : $t("message.classificationResultNo")
+        }}
       </td>
     </tr>
   </table>
