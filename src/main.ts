@@ -1,5 +1,7 @@
 import { createApp } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
+import axios from "axios";
+import VueAxios from "vue-axios";
 import "bulma/css/bulma.min.css";
 
 import App from "./App.vue";
@@ -53,4 +55,5 @@ const app = createApp(App);
 app.config.globalProperties.$API = "http://127.0.0.1:5000/";
 app.use(router);
 app.use(i18n);
+app.use(VueAxios, axios);
 app.mount("#app");

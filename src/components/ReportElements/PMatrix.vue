@@ -28,7 +28,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .p-matrix-numbers {
   color: white;
   text-align: center !important;

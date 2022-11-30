@@ -22,6 +22,9 @@ export const messages = {
       normalizedPercentage: "Normalized percentage",
       representativenessMetric: "Average percentage of representativeness",
       combinationsByFoce: "Combinations by force",
+      train: "Train",
+      test: "Test",
+      alerts: "Alerts",
     },
   },
   es: {
@@ -47,6 +50,9 @@ export const messages = {
       normalizedPercentage: "Porcentaje normalizado",
       representativenessMetric: "Porcentaje promedio de representatividad",
       combinationsByFoce: "Combinaciones por fuerza",
+      train: "Entrenamiento",
+      test: "Prueba",
+      alerts: "Alertas",
     },
   },
 };

@@ -44,14 +44,10 @@ export default defineComponent({
   <div class="block">
     <div class="columns">
       <div class="column">
-        <h2 class="subtitle">Datos originales:</h2>
+        <h2 class="subtitle">Original data set:</h2>
         <table class="table">
           <tr>
-            <th
-              v-for="(column, index) in columns"
-              :key="column"
-              :class="{ 'is-selected': index == columns.length - 1 }"
-            >
+            <th v-for="(column, index) in columns" :key="index" :class="{ 'is-selected': index == columns.length - 1 }">
               {{ column }}
             </th>
           </tr>
@@ -67,14 +63,10 @@ export default defineComponent({
         </table>
       </div>
       <div class="column" v-if="isValidData">
-        <h2 class="subtitle">Datos en categorias binarias:</h2>
+        <h2 class="subtitle">Data in binary categories:</h2>
         <table class="table">
           <tr>
-            <th
-              v-for="(column, index) in columns"
-              :key="column"
-              :class="{ 'is-selected': index == columns.length - 1 }"
-            >
+            <th v-for="(column, index) in columns" :key="index" :class="{ 'is-selected': index == columns.length - 1 }">
               {{ column }}
             </th>
           </tr>
@@ -90,10 +82,10 @@ export default defineComponent({
         </table>
       </div>
       <div class="column" v-if="isValidData">
-        <h2 class="subtitle">Categorias:</h2>
+        <h2 class="subtitle">Categories:</h2>
         <table class="table">
           <tr>
-            <th>Categoria\Valor</th>
+            <th>Category\Value</th>
             <th>0</th>
             <th>1</th>
           </tr>

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import GeneralDataReport from "./ReportElements/GeneralData.vue";
-import ClassifierReport from "./ReportElements/Classifier.vue";
+import ClassifierReport from "./ReportElements/ClassifierResumen.vue";
 import RepresentativenessReport from "./RepresentativenessReport.vue";
 import ComparativeCombinations from "./ReportElements/ComparativeCombinations.vue";
 
@@ -69,12 +69,14 @@ export default defineComponent({
     </div>
   </div>
   <ComparativeCombinations />
-  <ClassifierReport
-    :columns="columns"
-    :binary-categories="binaryCategories"
-    :x_test="x_test"
-    :y_test="y_test"
-    :y_pred="y_pred"
-    :score="score"
-  />
+  <div class="block" style="margin-top: 20px">
+    <ClassifierReport
+      :columns="columns"
+      :binary-categories="binaryCategories"
+      :x_test="x_test"
+      :y_test="y_test"
+      :y_pred="y_pred"
+      :score="score"
+    />
+  </div>
 </template>
